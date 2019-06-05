@@ -1,13 +1,29 @@
-﻿namespace DotNetFunctional.Maybe
+﻿// <copyright file="Maybe{T}.cs" company="DotNetFunctional">
+// Copyright (c) DotNetFunctional. All rights reserved.
+//
+// Licensed under the MIT license.
+// See LICENSE file in the project root for full license information.
+// </copyright>
+
+namespace DotNetFunctional.Maybe
 {
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// A wrapper for either an optional value.
+    /// </summary>
+    /// <typeparam name="T">The type of the value.</typeparam>
     public struct Maybe<T> : IEquatable<Maybe<T>>
     {
         /// <summary>
         /// Nothing value.
         /// </summary>
+        /// <remarks>
+        /// As <see cref="Maybe{T}"/> is a value type, the value of <code>default(Maybe<T>)</code>
+        /// is equivalent to the invocation of the default ctor. of it, meaning that the object created
+        /// will have all its properties with default values.
+        /// </remarks>
         public static readonly Maybe<T> Nothing = default;
 
         private readonly T value;
@@ -40,7 +56,7 @@
         }
 
         /// <summary>
-        /// Gets a value indicating whether a value is present or not.
+        /// Gets a value indicating whether the current <see cref="Maybe{T}"/> object has a valid value of its underlying type.
         /// </summary>
         public bool HasValue { get; }
 
@@ -49,7 +65,7 @@
         public static bool operator !=(Maybe<T> left, Maybe<T> right) => !left.Equals(right);
 
         /// <inheritdoc/>
-        public override string ToString() => this.HasValue ? $"<{this.value.ToString()}>" : "<Nothing>";
+        public override string ToString() => this.HasValue ? $"Maybe<{this.value.ToString()}>" : "Maybe<Nothing>";
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => obj is Maybe<T> mb && this.Equals(mb);
@@ -66,17 +82,30 @@
         /// <inheritdoc/>
         public bool Equals(Maybe<T> other) => this.HasValue.Equals(other.HasValue) && EqualityComparer<T>.Default.Equals(this.value, other.value);
 
-        public Maybe<TResult> Match<TResult>(Func<T, TResult> someFn, Func<T, TResult> noneFn)
-        {
-            if (this.HasValue)
-            {
-                var result = someFn(this.value);
-                return result != null ? Maybe.Lift(result) : default;
-            }
-            else
-            {
-                return Maybe.Lift(noneFn(default));
-            }
-        }
+        /// <summary>
+        /// Matches the wrapped value and maps it into a another unwrapped value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result of the mapping.</typeparam>
+        /// <param name="someFn">The mapping function to be used when the current instance has a value. Should not throw exceptions.</param>
+        /// <param name="none">The value to return when the current instance has no value.</param>
+        /// <returns>The unwrapped mapped value.</returns>
+        public TResult Match<TResult>(Func<T, TResult> someFn, TResult none) => this.HasValue ? someFn(this.value) : none;
+
+        /// <summary>
+        /// Maps the wrapped value into another wrapped value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result of the mapping.</typeparam>
+        /// <param name="mapFn">The mapping function. Should not throw exceptions.</param>
+        /// <returns>The wrapped mapped value.</returns>
+        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapFn) => this.Bind(val => Maybe.Lift(mapFn(val)));
+
+        /// <summary>
+        /// Binds the wrapped value.
+        /// If no value is stored, <paramref name="bindFn"/> is not invoked and this method immediately returns <see cref="Maybe{T}.Nothing"/>.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result of the binding.</typeparam>
+        /// <param name="bindFn">The binding function. Should not throw exceptions.</param>
+        /// <returns>The binded wrapped value.</returns>
+        public Maybe<TResult> Bind<TResult>(Func<T, Maybe<TResult>> bindFn) => this.HasValue ? bindFn(this.value) : Maybe<TResult>.Nothing;
     }
 }
