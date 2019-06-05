@@ -19,7 +19,8 @@ namespace DotNetFunctional.Maybe
         /// <param name="source"></param>
         /// <param name="selectFn"></param>
         /// <returns></returns>
-        public static Maybe<TResult> Select<TSource, TResult>(this Maybe<TSource> source, Func<TSource, TResult> selectFn) => source.Bind(val => Maybe.Lift(selectFn(val)));
+        public static Maybe<TResult> Select<TSource, TResult>(this Maybe<TSource> source, Func<TSource, TResult> selectFn)
+            => source.Bind(val => Maybe.Lift(selectFn(val)));
 
         /// <summary>
         /// Enables LINQ support.
@@ -29,6 +30,22 @@ namespace DotNetFunctional.Maybe
         /// <param name="source"></param>
         /// <param name="selectFn"></param>
         /// <returns></returns>
-        public static Maybe<TResult> SelectMany<TSource, TResult>(this Maybe<TSource> source, Func<TSource, Maybe<TResult>> selectFn) => source.Bind(val => selectFn(val));
+        public static Maybe<TResult> SelectMany<TSource, TResult>(this Maybe<TSource> source, Func<TSource, Maybe<TResult>> selectFn)
+            => source.Bind(val => selectFn(val));
+
+        /// <summary>
+        /// Enables LINQ support.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TOther"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="selectFn"></param>
+        /// <param name="projectFn"></param>
+        /// <returns></returns>
+        public static Maybe<TResult> SelectMany<TSource, TOther, TResult>(
+            this Maybe<TSource> source,
+            Func<TSource, Maybe<TOther>> selectFn,
+            Func<TSource, TOther, TResult> projectFn) => source.Bind(sourceVal => selectFn(sourceVal).Select(otherVal => projectFn(sourceVal, otherVal)));
     }
 }
