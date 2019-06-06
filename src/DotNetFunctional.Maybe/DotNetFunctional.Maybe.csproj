@@ -1,8 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>7.1</LangVersion>
+    <Authors>José Toledo Navarro</Authors>
+    <Summary>An Option type monad for C# with LINQ support and rich fluent syntax.</Summary>
+    <Description>An Option type monad for C# with LINQ support and rich fluent syntax.</Description>
+    <TargetFrameworks>netstandard2.0;net452;net461;net47</TargetFrameworks>
+    <AssemblyName>DotNetFunctional.Maybe</AssemblyName>
+    <PackageId>DotNetFunctional.Maybe</PackageId>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <LangVersion>latest</LangVersion>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/dotnetfunctional/Maybe</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,5 +22,4 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
 </Project>
