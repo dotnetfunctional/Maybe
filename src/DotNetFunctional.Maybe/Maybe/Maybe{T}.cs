@@ -20,7 +20,7 @@ namespace DotNetFunctional.Maybe
         /// Nothing value.
         /// </summary>
         /// <remarks>
-        /// As <see cref="Maybe{T}"/> is a value type, the value of <code>default(Maybe<T>)</code>
+        /// As <see cref="Maybe{T}"/> is a value type, the value of default(Maybe{T})
         /// is equivalent to the invocation of the default ctor. of it, meaning that the object created
         /// will have all its properties with default values.
         /// </remarks>
@@ -60,8 +60,20 @@ namespace DotNetFunctional.Maybe
         /// </summary>
         public bool HasValue { get; }
 
+        /// <summary>
+        /// Implementation of the equality operator.
+        /// </summary>
+        /// <param name="left">The left operand.</param>
+        /// <param name="right">The right operand.</param>
+        /// <returns>True if left and right pass the equality check; false otherwise.</returns>
         public static bool operator ==(Maybe<T> left, Maybe<T> right) => left.Equals(right);
 
+        /// <summary>
+        /// Implementation of the inequality operator.
+        /// </summary>
+        /// <param name="left">The left operand.</param>
+        /// <param name="right">The right operand.</param>
+        /// <returns>True if left and right arent equal; false otherwise.</returns>
         public static bool operator !=(Maybe<T> left, Maybe<T> right) => !left.Equals(right);
 
         /// <inheritdoc/>
