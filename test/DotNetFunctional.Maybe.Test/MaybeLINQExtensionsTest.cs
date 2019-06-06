@@ -51,5 +51,49 @@ namespace DotNetFunctional.Maybe.Test
             stringResult.Should().Be(Maybe<string>.Nothing);
             intResult.Should().Be(Maybe<int>.Nothing);
         }
+
+        [Fact]
+        public void FromExpression_Should_YieldNothing_When_WhereConditionUnmeet()
+        {
+            var stringMaybe = Maybe.Lift("hello");
+            var intMaybe = Maybe.Lift(20);
+
+            var stringResult = from stringVal in stringMaybe
+                               where stringVal.StartsWith("o")
+                               select stringVal;
+            var intResult = from intVal in intMaybe
+                            where intVal > 30
+                            select intVal;
+
+            stringResult.Should().Be(Maybe<string>.Nothing);
+            intResult.Should().Be(Maybe<int>.Nothing);
+        }
+
+        [Fact]
+        public void FromExpression_Should_CorrectlyYield_When_WhereConditionMeet()
+        {
+            var stringMaybe = Maybe.Lift("hello");
+            var intMaybe = Maybe.Lift(20);
+
+            var stringResult = from stringVal in stringMaybe
+                               where stringVal.StartsWith(stringMaybe.Value)
+                               select stringVal;
+            var intResult = from intVal in intMaybe
+                            where intVal >= intMaybe.Value
+                            select intVal;
+
+            stringResult.Should()
+                .NotBe(Maybe<string>.Nothing, "the condition was meet and wrapped value was mapped")
+                .And
+                .NotBeSameAs(stringMaybe, "a new wrapped was created")
+                .And
+                .Be(stringMaybe, "the new wrapper has the same value");
+            intMaybe.Should()
+                .NotBe(Maybe<int>.Nothing, "condition was meet and wrapped value was mapped")
+                .And
+                .NotBeSameAs(intMaybe, "a new wrapped was created")
+                .And
+                .Be(intMaybe, "the new wrapper has the same value");
+        }
     }
 }
