@@ -1,4 +1,4 @@
-﻿// <copyright file="MaybeLINQExtensionsTest.cs" company="DotNetFunctional">
+﻿// <copyright file="MaybeLinqExtensionsTest.cs" company="DotNetFunctional">
 // Copyright (c) DotNetFunctional. All rights reserved.
 //
 // Licensed under the MIT license.
@@ -10,7 +10,7 @@ namespace DotNetFunctional.Maybe.Test
     using FluentAssertions;
     using Xunit;
 
-    public class MaybeLINQExtensionsTest
+    public class MaybeLinqExtensionsTest
     {
         [Fact]
         public void FromExpression_Should_CorrectlyYield_When_NoInvalidValuesAreAccessed()

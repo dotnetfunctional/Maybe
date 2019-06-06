@@ -1,4 +1,4 @@
-﻿// <copyright file="MaybeLINQExtensions.cs" company="DotNetFunctional">
+﻿// <copyright file="MaybeLinqExtensions.cs" company="DotNetFunctional">
 // Copyright (c) DotNetFunctional. All rights reserved.
 //
 // Licensed under the MIT license.
@@ -12,7 +12,7 @@ namespace DotNetFunctional.Maybe
     /// <summary>
     /// Provides extension methods for <see cref="Maybe{T}"/> that enable LINQ support.
     /// </summary>
-    public static class MaybeLINQExtensions
+    public static class MaybeLinqExtensions
     {
         /// <summary>
         /// Projects the wrapped value into a new one and wraps it.
