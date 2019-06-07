@@ -5,6 +5,21 @@ branches:
     - master
     - develop
     - /features\/.+/
+clone_depth: 1
+environment:
+  # No need to pre-warm the `NuGet` cache
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true`
+# AppVeyor will create a release tag if a matching one does not exist
+# hence triggering another build
+skip_tags: true
+skip_commits:
+  files:
+    - LICENSE
+    - README.md
+    - .circleci/*
+assembly_info:
+  # We'll version the binaries and the NuGet package in the build script
+  patch: false
 install:
   # The `SDK` is included in the `Visual Studio 2017` image
   # https://www.appveyor.com/docs/windows-images-software/#net-framework
@@ -18,19 +33,5 @@ build_script:
   - ps: dotnet cake build.cake
 after_build:
   # For once the build has completed
-assembly_info:
-  # We'll version the binaries and the NuGet package in the build script
-  patch: false
 test: off
-# AppVeyor will create a release tag if a matching one does not exist
-# hence triggering another build
-skip_tags: true
-skip_commits:
-  files:
-    - LICENSE
-    - README.md
-    - .circleci/*
 deploy: off
-environment:
-  # No need to pre-warm the `NuGet` cache
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true`
