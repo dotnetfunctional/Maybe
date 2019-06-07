@@ -1,15 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-
     <IsPackable>false</IsPackable>
+    <CodeAnalysisRuleSet>$(SolutionDir)\Project.Test.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
 
-    <LangVersion>7.1</LangVersion>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <TreatSpecificWarningsAsErrors />
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
+    <AdditionalFiles Include="$(SolutionDir)\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,5 +35,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\DotNetFunctional.Maybe\DotNetFunctional.Maybe.csproj" />
   </ItemGroup>
-
 </Project>

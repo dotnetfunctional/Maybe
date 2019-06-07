@@ -12,8 +12,13 @@
     <RepositoryUrl>https://github.com/dotnetfunctional/Maybe</RepositoryUrl>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <TreatSpecificWarningsAsErrors />
+  </PropertyGroup>
+
   <ItemGroup>
-    <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
+    <AdditionalFiles Include="$(SolutionDir)\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
