@@ -1,14 +1,12 @@
-version: '{build}'
 image: Visual Studio 2017
 branches:
   only:
     - master
     - develop
     - /features\/.+/
-clone_depth: 1
 environment:
   # No need to pre-warm the `NuGet` cache
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true`
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 # AppVeyor will create a release tag if a matching one does not exist
 # hence triggering another build
 skip_tags: true
@@ -18,8 +16,8 @@ skip_commits:
     - README.md
     - .circleci/*
 assembly_info:
-  # We'll version the binaries and the NuGet package in the build script
-  patch: false
+    # We'll version the binaries and the NuGet package in the build script
+    patch: false                      
 install:
   # The `SDK` is included in the `Visual Studio 2017` image
   # https://www.appveyor.com/docs/windows-images-software/#net-framework
@@ -30,8 +28,21 @@ build_script:
   # Download/install modules defined by #module directives
   - ps: dotnet cake build.cake --bootstrap
   # Run cake script
-  - ps: dotnet cake build.cake
+  - ps: dotnet cake build.cake --pack
 after_build:
   # For once the build has completed
 test: off
-deploy: off
+artifacts:
+  - path: artifacts\packages\*.nupkg
+    name: packages
+deploy:
+- provider: NuGet
+  name: production
+  artifacts: packages
+  api_key:
+    secure: RffBv1JUPzoM/xvk4z0YoMh67V7jU2WBvI8RYEl5m3nOQoX1aoJ8UbJ4S4K+jWlS
+  on:
+    # release from master branch only
+    branch: master
+    # deploy on tag push only
+    APPVEYOR_REPO_TAG: true         
