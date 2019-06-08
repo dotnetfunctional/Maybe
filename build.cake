@@ -144,7 +144,6 @@ Task("Pack")
             OutputDirectory = packagesDir,
             MSBuildSettings = new DotNetCoreMSBuildSettings()
                 .WithProperty("PackageVersion", packageVersion)
-                .WithProperty("Copyright", $"Copyright Contoso {DateTime.Now.Year}")
         };
 
         if (IsRunningOnLinuxOrDarwin())
