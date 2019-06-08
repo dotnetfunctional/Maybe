@@ -43,6 +43,4 @@ deploy:
     secure: RffBv1JUPzoM/xvk4z0YoMh67V7jU2WBvI8RYEl5m3nOQoX1aoJ8UbJ4S4K+jWlS
   on:
     # release from master branch only
-    branch: master
-    # deploy on tag push only
-    APPVEYOR_REPO_TAG: true         
+    branch: master       

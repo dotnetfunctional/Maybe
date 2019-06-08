@@ -13,7 +13,7 @@ namespace DotNetFunctional.Maybe
     public static class Maybe
     {
         /// <summary>
-        /// Creates a wrapper for a value.
+        /// Lifts a value.
         /// </summary>
         /// <typeparam name="T">The value type.</typeparam>
         /// <param name="value">The value to wrap.</param>
@@ -21,7 +21,7 @@ namespace DotNetFunctional.Maybe
         public static Maybe<T> Lift<T>(T value) => value != null ? new Maybe<T>(value) : Maybe<T>.Nothing;
 
         /// <summary>
-        /// Creates a wrapper for a nullable-value.
+        /// Lifts a nullable-value.
         /// </summary>
         /// <typeparam name="T">The value type.</typeparam>
         /// <param name="value">The value to wrap.</param>

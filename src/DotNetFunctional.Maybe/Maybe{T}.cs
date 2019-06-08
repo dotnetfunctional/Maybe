@@ -11,7 +11,7 @@ namespace DotNetFunctional.Maybe
     using System.Collections.Generic;
 
     /// <summary>
-    /// A wrapper for either an optional value.
+    /// A wrapper for an optional value.
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     public struct Maybe<T> : IEquatable<Maybe<T>>
