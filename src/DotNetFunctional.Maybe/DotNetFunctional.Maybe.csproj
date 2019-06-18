@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Authors>José Toledo Navarro</Authors>
-    <Summary>An Option type monad for C# with LINQ support and rich fluent syntax.</Summary>
-    <Description>An Option type monad for C# with LINQ support and rich fluent syntax.</Description>
-    <TargetFrameworks>netstandard2.0;net452;net461;net47</TargetFrameworks>
+    <Summary>An Option monad for C# with LINQ support and rich fluent syntax.</Summary>
+    <Description>An Option monad for C# with LINQ support and rich fluent syntax.</Description>
+    <PackageTags>monad;functional-progamming;option-monad</PackageTags>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <AssemblyName>DotNetFunctional.Maybe</AssemblyName>
     <PackageId>DotNetFunctional.Maybe</PackageId>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

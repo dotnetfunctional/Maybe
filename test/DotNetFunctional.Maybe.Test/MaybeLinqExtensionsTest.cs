@@ -13,7 +13,84 @@ namespace DotNetFunctional.Maybe.Test
     public class MaybeLinqExtensionsTest
     {
         [Fact]
-        public void FromExpression_Should_CorrectlyYield_When_NoInvalidValuesAreAccessed()
+        public void Select_Should_YieldNothing_When_InvokedOnNothing()
+        {
+            var stringMaybe = Maybe<string>.Nothing;
+            var intMaybe = Maybe<int>.Nothing;
+
+            var stringResult = stringMaybe.Select(val => $"Source val: {val} ");
+            var intResult = intMaybe.Select(val => val + 10);
+
+            stringResult.Should()
+                .Be(Maybe<string>.Nothing, "the projection wont be applied on nothing");
+            intResult.Should()
+                .Be(Maybe<int>.Nothing, "the projection wont be applied on nothing");
+        }
+
+        [Fact]
+        public void Select_Should_YieldProjectedValue_When_InvokedOnValidWrapper()
+        {
+            var stringMaybe = Maybe.Lift("hello");
+            var intMaybe = Maybe.Lift(0);
+            string SelectString(string val) => $"Source val: {val} ";
+            int SelectInt(int val) => val + 10;
+
+            var stringResult = stringMaybe.Select(SelectString);
+            var intResult = intMaybe.Select(SelectInt);
+
+            stringResult.Should()
+                .Be(stringMaybe.Map(SelectString), "the value was projected");
+            intResult.Should()
+                .Be(intMaybe.Map(SelectInt), "the value was projected");
+        }
+
+        [Fact]
+        public void Where_Should_YieldSource_When_PredicateFullfiled()
+        {
+            var stringMaybe = Maybe.Lift("hello");
+            var intMaybe = Maybe.Lift(20);
+
+            var stringResult = stringMaybe.Where(val => val.StartsWith("h"));
+            var intResult = intMaybe.Where(val => val > 10);
+
+            stringResult.Should()
+                .Be(stringMaybe, "the source wrapper is yielded");
+            intResult.Should()
+                .Be(intMaybe, "the source wrapper is yielded");
+        }
+
+        [Fact]
+        public void Where_Should_YieldNothing_When_PredicateUnmeet()
+        {
+            var stringMaybe = Maybe.Lift("hello");
+            var intMaybe = Maybe.Lift(20);
+
+            var stringResult = stringMaybe.Where(val => val.StartsWith("x"));
+            var intResult = intMaybe.Where(val => val > 20);
+
+            stringResult.Should()
+                .Be(Maybe<string>.Nothing, "the predicate evaluated on the source yielded false");
+            intResult.Should()
+                .Be(Maybe<int>.Nothing, "the predicate evaluated on the source yielded false");
+        }
+
+        [Fact]
+        public void Where_Should_YieldNothing_When_InvokedOnNothing()
+        {
+            var stringMaybe = Maybe<string>.Nothing;
+            var intMaybe = Maybe<int>.Nothing;
+
+            var stringResult = stringMaybe.Where(val => val.StartsWith("h"));
+            var intResult = intMaybe.Where(val => val > 10);
+
+            stringResult.Should()
+                .Be(Maybe<string>.Nothing, "the predicate wont be applied on nothing");
+            intResult.Should()
+                .Be(Maybe<int>.Nothing, "the predicate wont be applied on nothing");
+        }
+
+        [Fact]
+        public void QueryExpression_Should_CorrectlyYield_When_NoInvalidValuesAreAccessed()
         {
             var stringLeftMaybe = Maybe.Lift("he");
             var stringRightMaybe = Maybe.Lift("llo");
@@ -27,14 +104,14 @@ namespace DotNetFunctional.Maybe.Test
                             from right in intRightMaybe
                             select left + right;
 
-            stringResult.Should().NotBeNull();
-            stringResult.Value.Should().Be(stringLeftMaybe.Value + stringRightMaybe.Value);
-            intResult.Should().NotBeNull();
-            intResult.Value.Should().Be(intLeftMaybe.Value + intRightMaybe.Value);
+            stringResult.Should()
+                .Be(Maybe.Lift(stringLeftMaybe.Value + stringRightMaybe.Value));
+            intResult.Should()
+                .Be(Maybe.Lift(intLeftMaybe.Value + intRightMaybe.Value));
         }
 
         [Fact]
-        public void FromExpression_Should_ShortCircuit_When_NothingInstanceAccessed()
+        public void QueryExpression_Should_ShortCircuit_When_NothingInstanceAccessed()
         {
             var stringLeftMaybe = Maybe.Lift("he");
             var stringRightMaybe = Maybe<string>.Nothing;
@@ -48,12 +125,14 @@ namespace DotNetFunctional.Maybe.Test
                             from right in intRightMaybe
                             select left + right;
 
-            stringResult.Should().Be(Maybe<string>.Nothing);
-            intResult.Should().Be(Maybe<int>.Nothing);
+            stringResult.Should()
+                .Be(Maybe<string>.Nothing);
+            intResult.Should()
+                .Be(Maybe<int>.Nothing);
         }
 
         [Fact]
-        public void FromExpression_Should_YieldNothing_When_WhereConditionUnmeet()
+        public void QueryExpression_Should_YieldNothing_When_WhereConditionUnmeet()
         {
             var stringMaybe = Maybe.Lift("hello");
             var intMaybe = Maybe.Lift(20);
@@ -65,12 +144,14 @@ namespace DotNetFunctional.Maybe.Test
                             where intVal > 30
                             select intVal;
 
-            stringResult.Should().Be(Maybe<string>.Nothing);
-            intResult.Should().Be(Maybe<int>.Nothing);
+            stringResult.Should()
+                .Be(Maybe<string>.Nothing);
+            intResult.Should()
+                .Be(Maybe<int>.Nothing);
         }
 
         [Fact]
-        public void FromExpression_Should_CorrectlyYield_When_WhereConditionMeet()
+        public void QueryExpression_Should_CorrectlyYield_When_WhereConditionMeet()
         {
             var stringMaybe = Maybe.Lift("hello");
             var intMaybe = Maybe.Lift(20);
