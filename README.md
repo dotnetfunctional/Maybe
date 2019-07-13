@@ -48,6 +48,19 @@ if(!maybeConcat.HasValue)
 
 LINQ will short-circuit any expression if there is a `Maybe<T>.Nothing` at any point in the computation.
 
+### Unwrapping
+
+Values from `Maybe<T>` instance can be unwrapped directly in a safe way by using the `Maybe<T>#OrElse` extension method.
+The method allows you to provide a _fallback value__ in case that the wrapper contains nothing.
+The fallback value can be directly provided or by a delegate that is lazily invoked.
+
+```csharp
+Maybe<string> maybeNothing = Maybe<string>.Nothing;
+
+string directValue = maybeNothing.OrElse("something");
+string delegateValue = maybeNothing.OrElse(() => "something lazy");
+```
+
 ### Pattern matching
 
 A pattern match like method is exposed:
