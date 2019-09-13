@@ -171,6 +171,29 @@ namespace DotNetFunctional.Maybe.Test
             stringMatch.Should().Be(string.Empty);
         }
 
+        [Fact]
+        public void Tap_Should_RunNothingSideEffectAndNotSomethingSideEffect_When_OnNothing()
+        {
+            var test = "initial";
+            string result = default;
+            var sut = Maybe<string>.Nothing;
+
+            sut.Tap(v => result = v, () => result = test);
+
+            result.Should().Be(test);
+        }
+
+        [Fact]
+        public void Tap_Should_RunSomethingSideEffectAndNotNothingSideEffect_When_OnSomething()
+        {
+            string result = default;
+            var sut = Maybe.Lift("something");
+
+            sut.Tap(val => result = val, () => result = string.Empty);
+
+            result.Should().Be(sut.Value);
+        }
+
         public class MaybeTestReferenceTypes
         {
             public static IEnumerable<object[]> GetNothings()

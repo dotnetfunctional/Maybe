@@ -76,6 +76,16 @@ string hello = maybeHello.Match(val => $"Hello matched!", string.Empty);
 int ten = maybeTen.Match(val => val, 10);
 ```
 
+## Side-Effects
+To perform side effects, `Maybe<T>` exposes a `Tap<T>(somethingFn: Action<T>, nothingFn: Action)` method. It
+takes 2 delegates, invokes the according one depending on if the wrapper has something or not and returns the original wrapper.
+```csharp
+strig value = ...
+Maybe<string> wrapper = Maybe.Lift(...)
+                        .Tap(val => Console.WriteLine(value), () => Console.WriteLine("Nothing"));
+```
+
+
 ## Other projects
 
 Check out some of my other C# projects:
