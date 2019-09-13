@@ -2,6 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/jokc9aicecq0tvs1/branch/master?svg=true)](https://ci.appveyor.com/project/jotatoledo/maybe/branch/master)
 [![NuGet](http://img.shields.io/nuget/v/DotNetFunctional.Maybe.svg?logo=nuget)](https://www.nuget.org/packages/DotNetFunctional.Maybe/)
+[![Coverage Status](https://coveralls.io/repos/github/dotnetfunctional/Maybe/badge.svg?branch=master)](https://coveralls.io/github/dotnetfunctional/Maybe?branch=master)
 
 An Option monad for C# with LINQ support and rich fluent syntax.
 
