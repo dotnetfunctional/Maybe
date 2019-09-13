@@ -19,15 +19,5 @@ namespace DotNetFunctional.Maybe
         /// <param name="value">The value to wrap.</param>
         /// <returns>The wrapped value.</returns>
         public static Maybe<T> Lift<T>(T value) => value != null ? new Maybe<T>(value) : Maybe<T>.Nothing;
-
-        /// <summary>
-        /// Lifts a nullable-value.
-        /// </summary>
-        /// <typeparam name="T">The value type.</typeparam>
-        /// <param name="value">The value to wrap.</param>
-        /// <returns>The wrapped value.</returns>
-        public static Maybe<T> Lift<T>(T? value)
-            where T : struct
-            => value.HasValue ? Lift(value.Value) : Maybe<T>.Nothing;
     }
 }
