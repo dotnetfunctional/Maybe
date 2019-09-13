@@ -13,6 +13,18 @@ namespace DotNetFunctional.Maybe.Test
     public class MaybeLinqExtensionsTest
     {
         [Fact]
+        public void SelectMany_Should_CorrectlyYield_When_FlatteningNestedWrapper()
+        {
+            var source = "hello";
+            var sut = Maybe.Lift(Maybe.Lift(source));
+
+            var result = sut.SelectMany(val => val);
+
+            result.Should()
+                .Be(sut.Value, "the new wrapper has the nested wrapper.");
+        }
+
+        [Fact]
         public void Select_Should_YieldNothing_When_InvokedOnNothing()
         {
             var stringMaybe = Maybe<string>.Nothing;

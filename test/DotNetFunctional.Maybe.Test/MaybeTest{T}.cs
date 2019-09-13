@@ -14,6 +14,56 @@ namespace DotNetFunctional.Maybe.Test
 
     public class MaybeTest
     {
+        public static IEnumerable<object[]> GetInstances()
+        {
+            yield return new object[] { Maybe<string>.Nothing };
+            yield return new object[] { Maybe.Lift("test") };
+        }
+
+        [Fact]
+        public void GetHashCodeReturnsSameHashForDifferentWrapersWithSameValue()
+        {
+            var sut = Maybe.Lift(10);
+            var clone = Maybe.Lift(sut.Value);
+
+            var result = sut.GetHashCode();
+
+            result.Should().Be(clone.GetHashCode());
+        }
+
+        [Fact]
+        public void GetHashCodeReturnsSameHashOnNothing()
+        {
+            var sut = Maybe<string>.Nothing;
+            var clone = Maybe<string>.Nothing;
+
+            var result = sut.GetHashCode();
+
+            result.Should().Be(clone.GetHashCode());
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInstances))]
+        public void EqualityOperatorWorksOnSameInstances(Maybe<string> sut)
+        {
+            var other = sut;
+
+            var result = sut == other;
+
+            result.Should().BeTrue();
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInstances))]
+        public void InequalityOperatorWorksOnSameInstances(Maybe<string> sut)
+        {
+            var other = sut;
+
+            var result = sut != other;
+
+            result.Should().BeFalse();
+        }
+
         [Fact]
         public void Equals_Should_ReturnTrue_When_ComparingSameInstance()
         {
@@ -169,6 +219,29 @@ namespace DotNetFunctional.Maybe.Test
 
             intMatch.Should().Be(default);
             stringMatch.Should().Be(string.Empty);
+        }
+
+        [Fact]
+        public void Tap_Should_RunNothingSideEffectAndNotSomethingSideEffect_When_OnNothing()
+        {
+            var test = "initial";
+            string result = default;
+            var sut = Maybe<string>.Nothing;
+
+            sut.Tap(v => result = v, () => result = test);
+
+            result.Should().Be(test);
+        }
+
+        [Fact]
+        public void Tap_Should_RunSomethingSideEffectAndNotNothingSideEffect_When_OnSomething()
+        {
+            string result = default;
+            var sut = Maybe.Lift("something");
+
+            sut.Tap(val => result = val, () => result = string.Empty);
+
+            result.Should().Be(sut.Value);
         }
 
         public class MaybeTestReferenceTypes

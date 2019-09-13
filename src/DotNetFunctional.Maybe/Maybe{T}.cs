@@ -112,6 +112,26 @@ namespace DotNetFunctional.Maybe
         public Maybe<TResult> Map<TResult>(Func<T, TResult> mapFn) => this.Bind(val => Maybe.Lift(mapFn(val)));
 
         /// <summary>
+        /// Performs a side-effect at once.
+        /// </summary>
+        /// <param name="somethingFn">The side-effect to run if this is something.</param>
+        /// <param name="nothingFn">The side-effect to run if this is Nothing.</param>
+        /// <returns>The same wrapper.</returns>
+        public Maybe<T> Tap(Action<T> somethingFn = null, Action nothingFn = null)
+        {
+            if (this.HasValue)
+            {
+                somethingFn?.Invoke(this.Value);
+            }
+            else
+            {
+                nothingFn?.Invoke();
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// Binds the wrapped value.
         /// If no value is stored, <paramref name="bindFn"/> is not invoked and this method immediately returns <see cref="Maybe{T}.Nothing"/>.
         /// </summary>
