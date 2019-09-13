@@ -20,6 +20,28 @@ namespace DotNetFunctional.Maybe.Test
             yield return new object[] { Maybe.Lift("test") };
         }
 
+        [Fact]
+        public void GetHashCodeReturnsSameHashForDifferentWrapersWithSameValue()
+        {
+            var sut = Maybe.Lift(10);
+            var clone = Maybe.Lift(sut.Value);
+
+            var result = sut.GetHashCode();
+
+            result.Should().Be(clone.GetHashCode());
+        }
+
+        [Fact]
+        public void GetHashCodeReturnsSameHashOnNothing()
+        {
+            var sut = Maybe<string>.Nothing;
+            var clone = Maybe<string>.Nothing;
+
+            var result = sut.GetHashCode();
+
+            result.Should().Be(clone.GetHashCode());
+        }
+
         [Theory]
         [MemberData(nameof(GetInstances))]
         public void EqualityOperatorWorksOnSameInstances(Maybe<string> sut)
