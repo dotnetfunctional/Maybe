@@ -14,6 +14,34 @@ namespace DotNetFunctional.Maybe.Test
 
     public class MaybeTest
     {
+        public static IEnumerable<object[]> GetInstances()
+        {
+            yield return new object[] { Maybe<string>.Nothing };
+            yield return new object[] { Maybe.Lift("test") };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInstances))]
+        public void EqualityOperatorWorksOnSameInstances(Maybe<string> sut)
+        {
+            var other = sut;
+
+            var result = sut == other;
+
+            result.Should().BeTrue();
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInstances))]
+        public void InequalityOperatorWorksOnSameInstances(Maybe<string> sut)
+        {
+            var other = sut;
+
+            var result = sut != other;
+
+            result.Should().BeFalse();
+        }
+
         [Fact]
         public void Equals_Should_ReturnTrue_When_ComparingSameInstance()
         {

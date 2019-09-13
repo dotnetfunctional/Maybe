@@ -7,11 +7,29 @@
 
 namespace DotNetFunctional.Maybe.Test
 {
+    using System;
     using FluentAssertions;
     using Xunit;
 
     public class MaybeUnwrappExtensionsTest
     {
+        [Fact]
+        public void OrElse_Should_ReturnLazyValue_When_InvokedOnNothing()
+        {
+            var stringMaybe = Maybe<string>.Nothing;
+            Func<string> alternativeString = () => "hello";
+            var intMaybe = Maybe<int>.Nothing;
+            Func<int> alternativeInt = () => 10;
+
+            var stringResult = stringMaybe.OrElse(alternativeString);
+            var intResult = intMaybe.OrElse(alternativeInt);
+
+            stringResult.Should()
+                .Be(alternativeString(), "the alternative result is returned");
+            intResult.Should()
+                .Be(alternativeInt(), "the alternative result is returned");
+        }
+
         [Fact]
         public void OrElse_Should_ReturnAlternativeValue_When_InvokedOnNothing()
         {
