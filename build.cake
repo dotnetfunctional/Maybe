@@ -139,7 +139,6 @@ Task("Pack")
             Configuration = configuration,
             NoBuild = true,
             NoRestore = true,
-            IncludeSymbols = true,
             OutputDirectory = packagesDir,
             MSBuildSettings = new DotNetCoreMSBuildSettings()
                 .WithProperty("PackageVersion", packageVersion)
